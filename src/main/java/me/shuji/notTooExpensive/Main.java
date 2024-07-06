@@ -35,7 +35,7 @@ public final class Main extends JavaPlugin implements Listener {
 	}
 
 	@EventHandler
-	public void onAnvilUse(PrepareAnvilEvent e)	{
+	public void onAnvilUse(PrepareAnvilEvent e) {
 		AnvilInventory anvil = e.getInventory();
 		Player player = (Player) e.getView().getPlayer();
 		ItemStack resultItem = e.getResult();
@@ -58,20 +58,22 @@ public final class Main extends JavaPlugin implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		Player player = (Player) e.getWhoClicked();
 		if (player.getGameMode() == GameMode.SURVIVAL | player.getGameMode() == GameMode.ADVENTURE) {
-			if (e.getInventory().getType() == InventoryType.ANVIL) {
-				Inventory clickedInventory = e.getClickedInventory();
-				if (clickedInventory instanceof AnvilInventory) {
-					ItemStack currentItem = e.getCurrentItem();
+			if (repairCost >= 40) {
+				if (e.getInventory().getType() == InventoryType.ANVIL) {
+					Inventory clickedInventory = e.getClickedInventory();
+					if (clickedInventory instanceof AnvilInventory) {
+						ItemStack currentItem = e.getCurrentItem();
 
-					if (e.getSlotType() == InventoryType.SlotType.RESULT && currentItem != null && currentItem.getType() != Material.AIR) {
-						int playerLevel = player.getLevel();
-						if (playerLevel >= repairCost && repairCost >= 40) {
-							int resultLevel = playerLevel - repairCost;
-							console.info("playerlevel: " + playerLevel + " repaircost: " + repairCost + "result: " + resultLevel);
-							player.setLevel(resultLevel);
-						} else {
-							player.sendMessage("LvL needed: " + repairCost);
-							e.setCancelled(true);
+						if (e.getSlotType() == InventoryType.SlotType.RESULT && currentItem != null && currentItem.getType() != Material.AIR) {
+							int playerLevel = player.getLevel();
+							if (playerLevel >= repairCost) {
+								int resultLevel = playerLevel - repairCost;
+								console.info("playerlevel: " + playerLevel + " repaircost: " + repairCost + "result: " + resultLevel);
+								player.setLevel(resultLevel);
+							} else {
+								player.sendMessage("LvL needed: " + repairCost);
+								e.setCancelled(true);
+							}
 						}
 					}
 				}
