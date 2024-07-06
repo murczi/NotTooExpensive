@@ -7,9 +7,9 @@ plugins {
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
 }
 
-group = "me.shuji.joinmessage"
+group = "me.shuji.notTooExpensive"
 version = "1.0.0"
-description = "Send a message to player when joins"
+description = "Enchanting in an anvil can't be too expensive"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -56,7 +56,7 @@ tasks {
 // Configure plugin.yml generation
 // - name, version, and description are inherited from the Gradle project.
 bukkitPluginYaml {
-  main = "me.shuji.joinmessage.Main"
+  main = "me.shuji.notTooExpensive.Main"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   author = "Shuji"
   apiVersion = "1.21"
