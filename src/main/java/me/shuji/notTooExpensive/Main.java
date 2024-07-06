@@ -44,11 +44,10 @@ public final class Main extends JavaPlugin implements Listener {
 			if (resultItem != null && resultItem.getType() != Material.AIR) {
 				if (anvil.getRepairCost() >= 40) {
 					int exp = player.getLevel();
+
 					repairCost = anvil.getRepairCost();
 					if (anvil.getRepairCost() <= exp) {
 						anvil.setRepairCost(0);
-					} else {
-						player.sendMessage("LvL needed: " + anvil.getRepairCost());
 					}
 				}
 			}
@@ -71,6 +70,7 @@ public final class Main extends JavaPlugin implements Listener {
 							console.info("playerlevel: " + playerLevel + " repaircost: " + repairCost + "result: " + resultLevel);
 							player.setLevel(resultLevel);
 						} else {
+							player.sendMessage("LvL needed: " + repairCost);
 							e.setCancelled(true);
 						}
 					}
