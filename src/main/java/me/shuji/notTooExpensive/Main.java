@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
@@ -42,10 +43,10 @@ public final class Main extends JavaPlugin implements Listener {
 		anvil.setMaximumRepairCost(10000);
 		if (player.getGameMode() == GameMode.SURVIVAL | player.getGameMode() == GameMode.ADVENTURE) {
 			if (resultItem != null && resultItem.getType() != Material.AIR) {
-				if (anvil.getRepairCost() >= 40) {
+				repairCost = anvil.getRepairCost();
+				if (repairCost >= 40) {
 					int exp = player.getLevel();
 
-					repairCost = anvil.getRepairCost();
 					if (anvil.getRepairCost() <= exp) {
 						anvil.setRepairCost(0);
 					}
@@ -58,8 +59,9 @@ public final class Main extends JavaPlugin implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		Player player = (Player) e.getWhoClicked();
 		if (player.getGameMode() == GameMode.SURVIVAL | player.getGameMode() == GameMode.ADVENTURE) {
-			if (repairCost >= 40) {
-				if (e.getInventory().getType() == InventoryType.ANVIL) {
+			if (e.getInventory() instanceof AnvilInventory anvil) {
+				repairCost = anvil.getRepairCost();
+				if (repairCost >= 40) {
 					Inventory clickedInventory = e.getClickedInventory();
 					if (clickedInventory instanceof AnvilInventory) {
 						ItemStack currentItem = e.getCurrentItem();
@@ -80,6 +82,17 @@ public final class Main extends JavaPlugin implements Listener {
 			}
 		}
 	}
+
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		Player player = (Player) e.getPlayer();
+		if (player.getGameMode() == GameMode.SURVIVAL | player.getGameMode() == GameMode.ADVENTURE) {
+			if (e.getInventory().getType() == InventoryType.ANVIL) {
+				repairCost = 0;
+			}
+		}
+	}
+
 
 	private void setConfig() {
 		config.addDefault("enabled", true);
